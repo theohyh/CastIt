@@ -9,9 +9,10 @@ import "@babylonjs/core/Helpers/sceneHelpers";
 import { templateConfig } from "../config/template-config";
 import { sceneAssets } from "./assets";
 import { getSceneRuntimeState } from "./scene-runtime";
+import { FreeCamera } from "@babylonjs/core";
 
 export default class MainScene {
-  private camera: ArcRotateCamera;
+  private camera: FreeCamera;
 
   constructor(
     private scene: Scene,
@@ -27,9 +28,11 @@ export default class MainScene {
   }
 
   _setCamera(scene: Scene): void {
-    this.camera = new ArcRotateCamera("camera", Tools.ToRadians(90), Tools.ToRadians(80), 20, Vector3.Zero(), scene);
+    this.camera = new FreeCamera("camera", Vector3.Zero(), scene);
     this.camera.attachControl(this.canvas, true);
-    this.camera.setTarget(Vector3.Zero());
+    this.canvas.addEventListener("click", () => {
+      this.canvas.requestPointerLock();
+    });
   }
 
   _setLight(scene: Scene): void {
@@ -48,8 +51,9 @@ export default class MainScene {
   }
 
   async loadComponents(): Promise<void> {
-    const [{ Ground }, guiModule, modelModule] = await Promise.all([
+    const [{ Ground }, { PlayerController }, guiModule, modelModule] = await Promise.all([
       import("./ground"),
+      import("../player/player-controller"),
       templateConfig.features.gui ? import("./gui") : Promise.resolve(null),
       templateConfig.features.demoModel ? import("./model-loader") : Promise.resolve(null),
     ]);
@@ -60,6 +64,8 @@ export default class MainScene {
     };
 
     new Ground(this.scene);
+
+    new PlayerController(this.scene, this.camera);
 
     if (guiModule) {
       await guiModule.setUI(this.scene);
