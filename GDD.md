@@ -261,8 +261,8 @@ M9 (co-op) → M10 (economy) → M11 (spectacle) → M12 (ship)
 - [x] Moveable Body
 - [x] 1st Person Camera
 - [ ] Primitive Specs (HP + Attack)
-- [ ] Object & Spell Collisions
-- [ ] Primitive Spells (1 projectile)
+- [x] Object & Spell Collisions
+- [x] Primitive Spells (1 projectile)
 - [ ] Primitive Spell Casting (click-to-fire)
 
 **Demo State:** A grey box room. Player moves with WASD, looks with mouse. Left-click fires a glowing projectile that hits the far wall with a particle impact. A floating HP number on the HUD. The player can walk, look, and cast.
