@@ -258,8 +258,8 @@ M9 (co-op) → M10 (economy) → M11 (spectacle) → M12 (ship)
 ### M1 — "Hello World Caster" (Week 1)
 
 **Features:**
-- [ ] Moveable Body
-- [ ] 1st Person Camera
+- [x] Moveable Body
+- [x] 1st Person Camera
 - [ ] Primitive Specs (HP + Attack)
 - [ ] Object & Spell Collisions
 - [ ] Primitive Spells (1 projectile)
