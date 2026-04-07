@@ -28,6 +28,10 @@ class App {
 
   async bootstrap(): Promise<void> {
     this.engine = await this._createEngine();
+
+    // Limit the framerate to 60 FPS
+    //this.engine.maxFPS = 60;
+
     this.scene = new Scene(this.engine);
 
     if (templateConfig.features.physics) {

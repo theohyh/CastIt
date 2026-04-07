@@ -30,6 +30,11 @@ export default class MainScene {
   _setCamera(scene: Scene): void {
     this.camera = new FreeCamera("camera", Vector3.Zero(), scene);
     this.camera.attachControl(this.canvas, true);
+    this.camera.inputs.removeByType("FreeCameraKeyboardMoveInput");
+    this.camera.minZ = 0.1;
+    this.camera.angularSensibility = 800;
+    //this.camera.speed = 1.4;
+    this.camera.inertia = 0;
     this.canvas.addEventListener("click", () => {
       this.canvas.requestPointerLock();
     });
@@ -53,7 +58,7 @@ export default class MainScene {
   async loadComponents(): Promise<void> {
     const [{ Ground }, { PlayerController }, guiModule, modelModule] = await Promise.all([
       import("./ground"),
-      import("../player/player-controller"),
+      import("../player/PlayerController"),
       templateConfig.features.gui ? import("./gui") : Promise.resolve(null),
       templateConfig.features.demoModel ? import("./model-loader") : Promise.resolve(null),
     ]);

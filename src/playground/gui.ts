@@ -81,6 +81,19 @@ export const setUI = async (scene: Scene): Promise<void> => {
     disposeXbotButton.isEnabled = false;
   });
 
+  const coordsText = new TextBlock("coordsText", "X: 0.00\nY: 0.00\nZ: 0.00");
+  coordsText.width = uiConfig.button.width;
+  coordsText.height = "60px";
+  coordsText.color = uiConfig.button.textColor;
+  panel.addControl(coordsText);
+
+  const coordsObserver = scene.onBeforeRenderObservable.add(() => {
+    if (scene.activeCamera) {
+      const pos = scene.activeCamera.position;
+      coordsText.text = `X: ${pos.x.toFixed(2)}\nY: ${pos.y.toFixed(2)}\nZ: ${pos.z.toFixed(2)}`;
+    }
+  });
+
   const disposeButton = Button.CreateSimpleButton("disposeButton", uiConfig.button.disposeLabel);
   disposeButton.width = uiConfig.button.width;
   disposeButton.height = uiConfig.button.height;
@@ -90,5 +103,6 @@ export const setUI = async (scene: Scene): Promise<void> => {
 
   disposeButton.onPointerUpObservable.addOnce(() => {
     advancedTexture.dispose();
+    scene.onBeforeRenderObservable.remove(coordsObserver);
   });
 };
