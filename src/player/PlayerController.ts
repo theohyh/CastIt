@@ -13,6 +13,8 @@ import {
   PhysicsCharacterController,
   CharacterSupportedState,
 } from "@babylonjs/core/Physics/v2/characterController";
+import { SpellInterface } from "./spell/SpellInterface";
+import { FireBallSpell } from "./spell/FireBallSpell";
 
 export class PlayerController {
   private GRAVITY = new Vector3(0, -9.81, 0);
@@ -27,6 +29,7 @@ export class PlayerController {
   private inputMap: Record<string, boolean> = {};
   private wantJump: boolean = false;
   private isJumping: boolean = false;
+  private currentSpell: SpellInterface = new FireBallSpell("fireBall");
 
   constructor(private scene: Scene, private camera: FreeCamera) {
     this.scene = scene;
@@ -59,6 +62,7 @@ export class PlayerController {
       if (kbInfo.type === 1) {
         this.inputMap[key] = true;
         if (key === ' ') this.wantJump = true;
+        if (key === 'f') this._castCurrentSpell();
       } else {
         this.inputMap[key] = false;
       }
@@ -142,6 +146,12 @@ export class PlayerController {
       );
 
     })
+  }
+  _castCurrentSpell() {
+    console.log("ok");
+    const dir: Vector3 = this.camera.getDirection(Vector3.Forward());
+    const pos: Vector3 = this.camera.position.add(dir.scale(1));
+    this.currentSpell.cast(this.scene, pos, dir);
   }
 
 
