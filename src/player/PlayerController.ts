@@ -15,6 +15,7 @@ import {
 } from "@babylonjs/core/Physics/v2/characterController";
 import { SpellInterface } from "./spell/SpellInterface";
 import { FireBallSpell } from "./spell/FireBallSpell";
+import { PointerEventTypes } from "@babylonjs/core";
 
 export class PlayerController {
   private GRAVITY = new Vector3(0, -9.81, 0);
@@ -62,11 +63,14 @@ export class PlayerController {
       if (kbInfo.type === 1) {
         this.inputMap[key] = true;
         if (key === ' ') this.wantJump = true;
-        if (key === 'f') this._castCurrentSpell();
+        //if (key === 'f') this._castCurrentSpell();
       } else {
         this.inputMap[key] = false;
       }
     });
+    this.scene.onPointerObservable.add(() => {
+      this._castCurrentSpell();
+    }, PointerEventTypes.POINTERDOWN)
   }
 
   _updatePhysics(): void {
